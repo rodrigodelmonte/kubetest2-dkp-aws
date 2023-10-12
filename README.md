@@ -1,6 +1,6 @@
 # kubetest2-dkp-aws
 
-> kubetest2-dkp-aws is a proof of concept to execute Kubernetes Conformance tests on AWS clusters deployed using DKP.
+> kubetest2-dkp-aws is a proof of concept to execute Kubernetes Conformance tests on AWS clusters deployed using DKP. It implements a kubetest2-DEPLOYER to manage the lifecycle of a Kubernetes cluster for tests.
 
 ## Requirements
 
@@ -20,7 +20,7 @@ go install github.com/rodrigodelmonte/kubetest2-dkp-aws
 
 ```sh
 CLUSTER_NAME=kubetest2-rhel-88
-AMI_ID=ami-05729346d7b1ec312 # Built with https://github.com/mesosphere/konvoy-image-builder/
+AMI_ID=ami-05729346d7b1ecXXX # Built with https://github.com/mesosphere/konvoy-image-builder/
 KUBERNETES_VERSION=1.27.5
 kubetest2 dkp-aws \
     --up \

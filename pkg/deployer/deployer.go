@@ -82,16 +82,33 @@ func (d *deployer) Up() error {
 }
 
 func (d *deployer) Down() error {
-	args := []string{
-		"delete",
-		"cluster",
-		"--cluster-name", d.ClusterName,
-		"--with-aws-bootstrap-credentials=true",
-		"--kubeconfig", d.KubeconfigPath,
+	command_args := [][]string{
+		{
+			"create",
+			"bootstrap",
+			"--with-aws-bootstrap-credentials=true",
+		},
+		{
+			"move",
+			"capi-resources",
+			"--from-kubeconfig", d.KubeconfigPath,
+			"--to-context kind-konvoy-capi-bootstrapper",
+		},
+		{
+			"delete",
+			"cluster",
+			"--cluster-name", d.ClusterName,
+		},
+		{
+			"delete",
+			"bootstrap",
+		},
 	}
+	for _, args := range command_args {
 
-	if exitCode := runner("dkp", args, os.Stdout, os.Stderr); exitCode != 0 {
-		return errors.New("failed to run dkp delete cluster")
+		if exitCode := runner("dkp", args, os.Stdout, os.Stderr); exitCode != 0 {
+			return errors.New("failed to delete dkp cluster")
+		}
 	}
 
 	return nil
@@ -102,7 +119,7 @@ func (d *deployer) IsUp() (up bool, err error) {
 	args := []string{"get", "nodes", "--kubeconfig", d.KubeconfigPath}
 
 	if exitCode := runner("kubectl", args, os.Stdout, os.Stderr); exitCode != 0 {
-		return false, errors.New("Cluster is not up")
+		return false, errors.New("cluster is not up")
 	}
 	return true, nil
 }
