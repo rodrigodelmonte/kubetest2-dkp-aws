@@ -35,3 +35,7 @@ kubetest2 dkp-aws \
     --test-package-version v${KUBERNETES_VERSION} \
     --focus-regex='\[Conformance\]' | tee e2e.log
 ```
+
+## References
+
+* <https://github.com/kubernetes-sigs/kubetest2#kubetest2>
