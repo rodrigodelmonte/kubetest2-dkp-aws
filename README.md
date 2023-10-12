@@ -13,7 +13,7 @@
 ```sh
 go install sigs.k8s.io/kubetest2/...@latest
 go install sigs.k8s.io/kubetest2/kubetest2-tester-ginkgo@latest
-go install github.com/rodrigodelmonte/kubetest2-dkp-aws
+go install github.com/rodrigodelmonte/kubetest2-dkp-aws@latest
 ```
 
 ## Running Kubernetes Conformance Tests
