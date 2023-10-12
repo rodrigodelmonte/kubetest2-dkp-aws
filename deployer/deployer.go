@@ -150,7 +150,7 @@ func bindFlags(d *deployer) *pflag.FlagSet {
 // assert that deployer implements types.DeployerWithKubeconfig
 var _ types.DeployerWithKubeconfig = &deployer{}
 
-// Run executes the dkp command with the given arguments
+// runner executes commands with the given arguments
 func runner(cmd string, args []string, stdout, stderr io.Writer) int {
 	cmdArgs := []string{}
 	cmdArgs = append(cmdArgs, args...)
