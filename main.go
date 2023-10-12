@@ -19,7 +19,7 @@ package main
 import (
 	"sigs.k8s.io/kubetest2/pkg/app"
 
-	"github.com/rodrigodelmonte/kubetest2-dkp-aws/deployer"
+	"github.com/rodrigodelmonte/kubetest2-dkp-aws/pkg/deployer"
 )
 
 func main() {
