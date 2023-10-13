@@ -92,7 +92,8 @@ func (d *deployer) Down() error {
 			"move",
 			"capi-resources",
 			"--from-kubeconfig", d.KubeconfigPath,
-			"--to-context kind-konvoy-capi-bootstrapper",
+			"--to-context",
+			"kind-konvoy-capi-bootstrapper",
 		},
 		{
 			"delete",
