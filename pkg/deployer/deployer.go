@@ -18,6 +18,7 @@ limitations under the License.
 package deployer
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"io"
@@ -27,6 +28,9 @@ import (
 
 	"github.com/octago/sflags/gen/gpflag"
 	"github.com/spf13/pflag"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
 	"sigs.k8s.io/kubetest2/pkg/types"
@@ -117,11 +121,29 @@ func (d *deployer) Down() error {
 
 func (d *deployer) IsUp() (up bool, err error) {
 
-	args := []string{"get", "nodes", "--kubeconfig", d.KubeconfigPath}
-
-	if exitCode := runner("kubectl", args, os.Stdout, os.Stderr); exitCode != 0 {
-		return false, errors.New("cluster is not up")
+	config, err := clientcmd.BuildConfigFromFlags("", d.KubeconfigPath)
+	if err != nil {
+		return false, err
 	}
+
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return false, err
+	}
+
+	nodes, err := clientset.CoreV1().Nodes().List(context.TODO(), v1.ListOptions{})
+	if err != nil {
+		return false, err
+	}
+
+	for _, node := range nodes.Items {
+		for _, condition := range node.Status.Conditions {
+			if condition.Type == "Ready" && condition.Status != "True" {
+				return false, errors.New("cluster nodes are not ready yet")
+			}
+		}
+	}
+
 	return true, nil
 }
 

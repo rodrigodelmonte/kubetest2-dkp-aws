@@ -5,7 +5,6 @@
 ## Requirements
 
 * `dkp` CLI
-* `kubectl` CLI
 * Configured AWS credentials
 
 ## Install
